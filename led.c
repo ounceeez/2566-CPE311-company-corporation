@@ -16,7 +16,7 @@ void LED_Config(void);
 void TIMBase_Config(void);
 void CountPeople(void);
 void GPIO_Config(void);
-void PA0_EXTI_Config(void);
+void PA10_EXTI_Config(void);
 
 int IRout = 0, IRin = 0 , IRout_tim = 0, IRin_tim = 0;
 int count_people = 0, cnt_tim = 0;
@@ -31,7 +31,7 @@ int main()
 	IR_GPIO_Config();
 	LED_Config();
 	TIMBase_Config();
-	PA0_EXTI_Config();
+	PA10_EXTI_Config();
 	
 	while(1)
 	{
@@ -173,35 +173,36 @@ void IR_GPIO_Config(void)
 }
 
 void GPIO_Config(void){
-	LL_GPIO_InitTypeDef GPIO_InitStuct;
-	LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
-	
-	//PIN PA10
-	GPIO_InitStuct.Mode = LL_GPIO_MODE_INPUT;
-	GPIO_InitStuct.Pin = LL_GPIO_PIN_0;
-	GPIO_InitStuct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-	GPIO_InitStuct.Pull = LL_GPIO_PULL_NO;
-	GPIO_InitStuct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
-	LL_GPIO_Init(GPIOA, &GPIO_InitStuct);
+    LL_GPIO_InitTypeDef GPIO_InitStuct;
+    LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
+    
+    // Configure PA10 instead of PA0
+    GPIO_InitStuct.Mode = LL_GPIO_MODE_INPUT;
+    GPIO_InitStuct.Pin = LL_GPIO_PIN_10; // Change pin to PA10
+    GPIO_InitStuct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+    GPIO_InitStuct.Pull = LL_GPIO_PULL_NO;
+    GPIO_InitStuct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+    LL_GPIO_Init(GPIOA, &GPIO_InitStuct);
 }
 
-void PA0_EXTI_Config(void){
-	LL_EXTI_InitTypeDef PA0_EXTI_InitStruct;
-	LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
-	LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE0);
-	PA0_EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_10;
-	PA0_EXTI_InitStruct.LineCommand = ENABLE;
-	PA0_EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
-	PA0_EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING;
-	LL_EXTI_Init(&PA0_EXTI_InitStruct);
-	//Setup NVIC
-	NVIC_EnableIRQ((IRQn_Type) 6);
-	NVIC_SetPriority((IRQn_Type)6,0);
+void PA10_EXTI_Config(void){
+    LL_EXTI_InitTypeDef PA10_EXTI_InitStruct;
+    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
+    LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE10); // Change EXTI line to LL_SYSCFG_EXTI_LINE10
+    PA10_EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_10; // Change EXTI line to LL_EXTI_LINE_10
+    PA10_EXTI_InitStruct.LineCommand = ENABLE;
+    PA10_EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
+    PA10_EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING;
+    LL_EXTI_Init(&PA10_EXTI_InitStruct);
+    // Setup NVIC
+    NVIC_EnableIRQ(EXTI15_10_IRQn); // Change IRQ to handle EXTI line 10 to EXTI line 15
+    NVIC_SetPriority(EXTI15_10_IRQn, 0);
 }
 
-void EXTI0_IRQHandler(void){
-	if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_0) == SET){
-		if(sw_count == 0)
+void EXTI15_10_IRQHandler(void){
+    if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_10) == SET){ // Change EXTI line to LL_EXTI_LINE_10
+        // Handle interrupt for PA10
+			if(sw_count == 0)
 		{
 			LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_8);
 			LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_9);
@@ -212,9 +213,11 @@ void EXTI0_IRQHandler(void){
 			LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_9);
 			sw_count = 0;
 		}
- }
-	LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_0);
+    }
+    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_10); // Change EXTI line to LL_EXTI_LINE_10
 }
+
+
 void SystemClock_Config(void)
 {
   /* Enable ACC64 access and set FLASH latency */
