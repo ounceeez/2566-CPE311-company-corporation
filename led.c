@@ -21,7 +21,7 @@ void PA10_EXTI_Config(void);
 int IRout = 0, IRin = 0 , IRout_tim = 0, IRin_tim = 0;
 int count_people = 0, cnt_tim = 0;
 
-int jump1, jump2, jump3;
+int jump1, jump2, jump3, jump4;
 int cnt;
 int sw_count = 0;
 
@@ -35,16 +35,25 @@ int main()
 	
 	while(1)
 	{
+		CountPeople();
+		
 		LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_8);
 		LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_9);
-		CountPeople();
+		
 		if(count_people >= 1){
-			LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_8);
-			LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_9);
+			if(sw_count == 1){
+				LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_8);
+				LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_9);
+			}
+			else{
+				LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_8);
+				LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_9);
+			}
 		}
 		else{
 			LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_8);
 			LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_9);
+			sw_count = 0;
 		}
 	}
 }
@@ -102,6 +111,8 @@ void CountPeople(void)
 					IRout_tim = LL_TIM_GetCounter(TIM2);
 					LL_mDelay(100);
 					count_people -= 1;
+					if(count_people < 0)
+						count_people = 0;
 					LL_mDelay(500);
 					goto jump3;
 				}
