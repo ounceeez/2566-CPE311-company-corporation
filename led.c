@@ -15,6 +15,8 @@ void IR_GPIO_Config(void);
 void LED_Config(void);
 void TIMBase_Config(void);
 void CountPeople(void);
+void GPIO_Config(void);
+void PA10_EXTI_Config(void);
 
 int IRout = 0, IRin = 0 , IRout_tim = 0, IRin_tim = 0;
 int count_people = 0, cnt_tim = 0;
@@ -22,20 +24,23 @@ int count_people = 0, cnt_tim = 0;
 int jump1, jump2, jump3;
 int cnt;
 
-
 int main()
 {
 	SystemClock_Config();
 	IR_GPIO_Config();
 	LED_Config();
+	GPIO_Config();
 	TIMBase_Config();
+	PA10_EXTI_Config();
 	
 	while(1)
 	{
+		LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_8);
+		LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_9);
 		CountPeople();
-		if(coun_people >= 1){
+		if(count_people >= 1){
 			LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_8);
-			LL_GPIO_SetoutputPin(GPIOA, LL_GPIO_PIN_9);
+			LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_9);
 		}
 		else{
 			LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_8);
@@ -167,7 +172,41 @@ void IR_GPIO_Config(void)
 	
 }
 
+void GPIO_Config(void){
+	LL_GPIO_InitTypeDef GPIO_InitStuct;
+	LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
+	
+	//PIN PA10
+	GPIO_InitStuct.Mode = LL_GPIO_MODE_INPUT;
+	GPIO_InitStuct.Pin = LL_GPIO_PIN_10;
+	GPIO_InitStuct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+	GPIO_InitStuct.Pull = LL_GPIO_PULL_NO;
+	GPIO_InitStuct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+	LL_GPIO_Init(GPIOA, &GPIO_InitStuct);
+}
 
+void PA10_EXTI_Config(void){
+	LL_EXTI_InitTypeDef PA10_EXTI_InitStruct;
+	LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
+	LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE10);
+	PA10_EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_10;
+	PA10_EXTI_InitStruct.LineCommand = ENABLE;
+	PA10_EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
+	PA10_EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING;
+	LL_EXTI_Init(&PA10_EXTI_InitStruct);
+	//Setup NVIC
+	NVIC_EnableIRQ((IRQn_Type) 47);
+	NVIC_SetPriority((IRQn_Type)47,0);
+}
+
+void EXTI15_10_IRQHandler(void){
+	if((EXTI->PR & (1<<10)) == 1)
+	{
+		LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_8);
+		LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_9);
+	}
+	LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_10);
+}
 void SystemClock_Config(void)
 {
   /* Enable ACC64 access and set FLASH latency */
