@@ -23,6 +23,7 @@ int count_people = 0, cnt_tim = 0;
 
 int jump1, jump2, jump3;
 int cnt;
+int sw_count = 0;
 
 int main()
 {
@@ -199,11 +200,19 @@ void PA10_EXTI_Config(void){
 }
 
 void EXTI15_10_IRQHandler(void){
-	if((EXTI->PR & (1<<10)) == 1)
-	{
-		LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_8);
-		LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_9);
-	}
+	if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_10) == SET){
+		if(sw_count == 0)
+		{
+			LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_8);
+			LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_9);
+			sw_count = 1;
+		}
+		else if(sw_count == 1){
+			LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_8);
+			LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_9);
+			sw_count = 0;
+		}
+ }
 	LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_10);
 }
 void SystemClock_Config(void)
