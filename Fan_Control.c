@@ -15,7 +15,7 @@ void TIM_BASE_Config(void);
 void TIM_OC_GPIO_Config(void);
 void TIM_OC_Config(void);
 void Config_Motor(void);
-void PA0_EXTI_Config(void);
+void PA11_EXTI_Config(void);
 void GPIO_Config(void);
 
 int p = 0;
@@ -25,7 +25,7 @@ int main(void)
 	SystemClock_Config(); // Call Function SystemClock_Config
 	Config_Motor(); // Call Function Config Motor
 	GPIO_Config();
-	PA0_EXTI_Config();
+	PA11_EXTI_Config();
 	TIM_OC_Config(); // Call Function TIM_OC_Config
 	
 	while(1)
@@ -84,7 +84,7 @@ void GPIO_Config(void){
     
     // Configure PA11
     GPIO_InitStuct.Mode = LL_GPIO_MODE_INPUT;
-    GPIO_InitStuct.Pin = LL_GPIO_PIN_0; // Change pin to PA10
+    GPIO_InitStuct.Pin = LL_GPIO_PIN_11; 
     GPIO_InitStuct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
     GPIO_InitStuct.Pull = LL_GPIO_PULL_NO;
     GPIO_InitStuct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
@@ -110,24 +110,24 @@ void TIM_OC_Config()
 	LL_TIM_EnableCounter(TIM3);
 }
 
-void PA0_EXTI_Config(void) // EXTI Config for PA11
+void PA11_EXTI_Config(void) // EXTI Config for PA11
 {
-    LL_EXTI_InitTypeDef PA0_EXTI_InitStruct;
+    LL_EXTI_InitTypeDef PA11_EXTI_InitStruct;
     LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG); // Enable Bus Clock
-    LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE0); // Change EXTI line to LL_SYSCFG_EXTI_LINE11
-    PA0_EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_0; // Change EXTI line to LL_EXTI_LINE_11
-    PA0_EXTI_InitStruct.LineCommand = ENABLE;
-    PA0_EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
-    PA0_EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING;
-    LL_EXTI_Init(&PA0_EXTI_InitStruct);
+    LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE11); // Change EXTI line to LL_SYSCFG_EXTI_LINE11
+    PA11_EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_11; // Change EXTI line to LL_EXTI_LINE_11
+    PA11_EXTI_InitStruct.LineCommand = ENABLE;
+    PA11_EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
+    PA11_EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING;
+    LL_EXTI_Init(&PA11_EXTI_InitStruct);
     // Setup NVIC
-    NVIC_EnableIRQ((IRQn_Type)6); // Use EXTI15_10_IRQn for lines 10 to 15
-    NVIC_SetPriority((IRQn_Type)6, 0);
+    NVIC_EnableIRQ(EXTI15_10_IRQn); // Use EXTI15_10_IRQn for lines 10 to 15
+    NVIC_SetPriority(EXTI15_10_IRQn, 0);
 }
 
-void EXTI0_IRQHandler(void) // EXTI Handler for lines 10 to 15
+void EXTI15_10_IRQHandler(void) // EXTI Handler for lines 10 to 15
 {
-    if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_0) == SET)
+    if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_11) == SET)
 		{ // Change EXTI line to LL_EXTI_LINE_11
 			if(p>=0 && p<100)
 			{
@@ -141,7 +141,7 @@ void EXTI0_IRQHandler(void) // EXTI Handler for lines 10 to 15
 			}
 			//TIM_OC_Config();
     }
-    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_0); // Change EXTI line to LL_EXTI_LINE_11
+    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_11); // Change EXTI line to LL_EXTI_LINE_11
 }
 
 void SystemClock_Config(void)
