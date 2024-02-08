@@ -62,8 +62,8 @@ void CountPeople(void)
 {	
 		LL_TIM_EnableCounter(TIM2);  //Enable counter of Timer2
 		
-		IRout = LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_1);
-		IRin = LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_2);
+		IRout = LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_4);
+		IRin = LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_5);
 		 
 		cnt = LL_TIM_GetCounter(TIM2);
 		cnt_tim = 0;
@@ -76,8 +76,8 @@ void CountPeople(void)
 			{
 				cnt = LL_TIM_GetCounter(TIM2);
 				
-				IRout = LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_1);
-				IRin = LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_2);
+				IRout = LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_4);
+				IRin = LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_5);
 				
 				if(IRout == 0)
 					goto jump1;
@@ -101,8 +101,8 @@ void CountPeople(void)
 			{
 				cnt = LL_TIM_GetCounter(TIM2);
 				
-				IRout = LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_1);
-				IRin = LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_2);
+				IRout = LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_4);
+				IRin = LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_5);
 				
 				if(IRin == 0)
 					goto jump2;
