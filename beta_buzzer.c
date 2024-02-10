@@ -1,46 +1,100 @@
-/* Includes ------------------------------------------------------------------*/
+/*Base register adddress header file*/
 #include "stm32l1xx.h"
-#include "stm32l1xx_ll_system.h"
+/*Library related header files*/
+#include "stm32l1xx_ll_gpio.h"
+#include "stm32l1xx_ll_pwr.h"
+#include "stm32l1xx_ll_rcc.h"
 #include "stm32l1xx_ll_bus.h"
 #include "stm32l1xx_ll_utils.h"
-#include "stm32l1xx_ll_rcc.h"
-#include "stm32l1xx_ll_pwr.h"
-#include "stm32l1xx_ll_gpio.h"
+#include "stm32l1xx_ll_system.h"
+#include "stm32l1xx_ll_tim.h"
+#include "stdio.h"
+#include "math.h"
+#include "dwt_delay.h"
+
+
 #include "stm32l1xx_ll_usart.h"
 #include "stm32l1xx_ll_lcd.h"
 #include "stm32l152_glass_lcd.h"
-#include "stm32l1xx_ll_tim.h"
 
+// Key ???? 06 ????????????????? 05 ??? ??? 05 ????????????? 04
 #define E_O6					(uint16_t)569
+#define C_06					(uint16_t)523
+#define Cx_06					(uint16_t)554
+#define D_06					(uint16_t)587
+#define Ex_06					(uint16_t)569
+#define F_06					(uint16_t)698
+#define Fx_06					(uint16_t)739
+#define G_06					(uint16_t)784
+#define Ax_06					(uint16_t)830
+#define A_06					(uint16_t)880
+#define Bx_06					(uint16_t)932
+#define B_06					(uint16_t)987
+#define E_O5					(uint16_t)329
+#define C_05					(uint16_t)261
+#define Cx_05					(uint16_t)277
+#define D_05					(uint16_t)293
+#define Ex_05					(uint16_t)311
+#define F_05					(uint16_t)349
+#define Fx_05					(uint16_t)369
+#define G_05					(uint16_t)392
+#define Ax_05					(uint16_t)415
+#define A_05					(uint16_t)440
+#define Bx_05					(uint16_t)466
+#define B_05					(uint16_t)493
+#define MUTE					(uint16_t) 100000
 #define S_MUTE					(uint16_t) 1000000
+
+/*for 10ms update event*/
 #define TIMx_PSC			2 
+
+/*Macro function for ARR calculation*/
 #define ARR_CALCULATE(N) ((32000000) / ((TIMx_PSC) * (N)))
 
-void SystemClock_Config(void);
+/*Function Prototype*/
+
 void TIM_BASE_Config(uint16_t);
 void TIM_OC_GPIO_Config(void);
 void TIM_OC_Config(uint16_t);
 void TIM_BASE_DurationConfig(uint16_t);
 
 //array for music note
-uint16_t Note[] =  {E_O6,E_O6,S_MUTE,E_O6,E_O6,S_MUTE};
+/*uint16_t Note[] = {E_O5,E_O5,G_05,C_05,C_05,MUTE,MUTE,A_05,A_05,C_06,F_05,F_05,MUTE,MUTE,B_05,S_MUTE,B_05,S_MUTE,C_06,S_MUTE,D_06,S_MUTE,C_06,C_06,C_06,C_06,
+                   E_O5,E_O5,G_05,C_05,C_05,MUTE,MUTE,A_05,A_05,C_06,F_05,F_05,MUTE,MUTE,A_05,S_MUTE,B_05,S_MUTE,G_05,S_MUTE,A_05,S_MUTE,B_05,S_MUTE,D_06,S_MUTE,C_06,C_06,C_06,C_06};
+*/
+uint16_t Note[] = {E_O5,E_O5,MUTE,MUTE};
 int i =0; // position in array
-int main(void)
+
+void SystemClock_Config(void);
+
+int main()
 {
-  SystemClock_Config();
+ 	SystemClock_Config();
+	DWT_Init();
+	
 	TIM_OC_Config(ARR_CALCULATE(E_O5)); //call function
 	TIM_BASE_DurationConfig(10); //cal function
+
 	while(1)
 	{
-		if(LL_TIM_IsActiveFlag_UPDATE(TIM2) == SET) //if cause interrupt
-		{
-			LL_TIM_ClearFlag_UPDATE(TIM2); //clear interrupt
-			TIM_BASE_DurationConfig(Note[i]==S_MUTE?10:200);
-			LL_TIM_SetAutoReload(TIM4, ARR_CALCULATE((sizeof(Note)/sizeof(Note[i]))>i?Note[i++]:MUTE+(i=0))); //Change ARR of Timer PWM
-			LL_TIM_SetCounter(TIM2, 0);
-		}
+		
+		
+		
+			if(LL_TIM_IsActiveFlag_UPDATE(TIM2) == SET) //if cause interrupt
+			{
+				LL_TIM_ClearFlag_UPDATE(TIM2); //clear interrupt
+				TIM_BASE_DurationConfig(Note[i]==S_MUTE?10:200);
+				LL_TIM_SetAutoReload(TIM4, ARR_CALCULATE((sizeof(Note)/sizeof(Note[i]))>i?Note[i++]:MUTE+(i=0))); //Change ARR of Timer PWM
+				LL_TIM_SetCounter(TIM2, 0);
+			}
+		
+		
+		
+			DWT_Delay(1000);
+		
 	}
 }
+
 void TIM_BASE_DurationConfig(uint16_t ARR) 
 {
 	LL_TIM_InitTypeDef timbase_initstructure;
@@ -82,7 +136,7 @@ void TIM_OC_GPIO_Config(void)
 	gpio_initstructure.Mode = LL_GPIO_MODE_ALTERNATE;
 	gpio_initstructure.Alternate = LL_GPIO_AF_2;
 	gpio_initstructure.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-	gpio_initstructure.Pin = LL_GPIO_PIN_4;
+	gpio_initstructure.Pin = LL_GPIO_PIN_6;
 	gpio_initstructure.Pull = LL_GPIO_PULL_NO;
 	gpio_initstructure.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
 	LL_GPIO_Init(GPIOB, &gpio_initstructure);
@@ -117,6 +171,7 @@ void TIM4_IRQHandler(void)
 		LL_TIM_ClearFlag_CC1(TIM4);
 	}
 }
+
 void SystemClock_Config(void)
 {
   /* Enable ACC64 access and set FLASH latency */ 
