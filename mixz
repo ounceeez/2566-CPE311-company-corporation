@@ -110,18 +110,18 @@ void TIM_OC_Config(void);
 void Config_Motor(void);
 void PA11_EXTI_Config(void);
 
-int p = 100;
+int p = 0;
 
 int main()
 {
  	SystemClock_Config();
+	IR_GPIO_Config();
 	DWT_Init();
 	DS1820_GPIO_Configure();
 	seg_config();
-	//TIM_OC_Config_buzzer(ARR_CALCULATE(S_MUTE));
+	TIM_OC_Config_buzzer(ARR_CALCULATE(100000));
 	TIM_BASE_DurationConfig(10); //cal function
 	
-	IR_GPIO_Config();
 	Config_Motor();
 	LED_Config();
 	TIMBase_Config();
@@ -129,10 +129,10 @@ int main()
 	PA8_EXTI_Config();
 	PA11_EXTI_Config();
 	TIM_OC_Config();
-
+	
 	while(1)
 	{
-		
+		CountPeople();
 		if(count_people >= 1){
 			if(sw_count == 1){
 				LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_9);
@@ -179,17 +179,15 @@ int main()
 		
 		//change temp from float to char
 		temp *= 100;		//Ex. change 23.45 to 2345
-		/*
-		if(temp >= 2700){
-			if(LL_TIM_IsActiveFlag_UPDATE(TIM2) == SET) //if cause interrupt
-			{
-				LL_TIM_ClearFlag_UPDATE(TIM2); //clear interrupt
-				TIM_BASE_DurationConfig(Note[i]==S_MUTE?10:200);
-				LL_TIM_SetAutoReload(TIM4, ARR_CALCULATE((sizeof(Note)/sizeof(Note[i]))>i?Note[i++]:MUTE+(i=0))); //Change ARR of Timer PWM
-				LL_TIM_SetCounter(TIM2, 0);
-			}
+		
+		if(temp >= 2600.0 || count_people == 0){
+			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_3);
+			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_5);
+			LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_4);
 		}
-		*/
+		
+		
+
 		
 		/*
 		temp[0] = '0' + ((int)REAL_TEMP /1000);
@@ -451,14 +449,26 @@ void CountPeople(void)
 					IRin_tim = LL_TIM_GetCounter(TIM2);
 					LL_mDelay(100);
 					count_people += 1;
-					if(LL_TIM_IsActiveFlag_UPDATE(TIM2) == SET) //if cause interrupt
-			{
-				LL_TIM_ClearFlag_UPDATE(TIM2); //clear interrupt
-				TIM_BASE_DurationConfig(Note[i]==S_MUTE?10:200);
-				LL_TIM_SetAutoReload(TIM4, ARR_CALCULATE((sizeof(Note)/sizeof(Note[i]))>i?Note[i++]:MUTE+(i=0))); //Change ARR of Timer PWM
-				LL_TIM_SetCounter(TIM2, 0);
-			}
+					LL_TIM_DisableCounter(TIM2); //Disable counter of Timer2
+					LL_TIM_SetCounter(TIM2, 0);
+					
+					LL_TIM_ClearFlag_UPDATE(TIM2); //clear interrupt
+					TIM_OC_Config_buzzer(ARR_CALCULATE(10));
+					TIM_BASE_DurationConfig(10); //cal function
+					
+					
+				
 					LL_mDelay(500);
+					
+					
+					
+					LL_TIM_ClearFlag_UPDATE(TIM2); //clear interrupt
+				  TIM_OC_Config_buzzer(ARR_CALCULATE(31999));
+					TIM_BASE_DurationConfig(10); //cal function
+					
+					
+					
+					
 					goto jump3;
 				}
 			}
@@ -516,7 +526,7 @@ void TIMBase_Config(void)
 	timbase_intstructure.Prescaler = 60000 - 1;  //Set PSC = 60000
 	
 	LL_TIM_Init(TIM2, &timbase_intstructure);  //Initialize Timer2
-	LL_TIM_EnableCounter(TIM2);  //Enable counter of Timer2
+	//LL_TIM_EnableCounter(TIM2);  //Enable counter of Timer2
 }
 
 
