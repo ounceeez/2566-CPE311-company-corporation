@@ -119,8 +119,8 @@ int main()
 	DWT_Init();
 	DS1820_GPIO_Configure();
 	seg_config();
-	TIM_OC_Config_buzzer(ARR_CALCULATE(100000));
-	TIM_BASE_DurationConfig(10); //cal function
+	//TIM_OC_Config_buzzer(ARR_CALCULATE(100000));
+	//TIM_BASE_DurationConfig(10); //cal function
 	
 	Config_Motor();
 	LED_Config();
@@ -463,7 +463,7 @@ void CountPeople(void)
 					
 					
 					LL_TIM_ClearFlag_UPDATE(TIM2); //clear interrupt
-				  TIM_OC_Config_buzzer(ARR_CALCULATE(31999));
+				  TIM_OC_Config_buzzer(ARR_CALCULATE(59999));
 					TIM_BASE_DurationConfig(10); //cal function
 					
 					
@@ -493,6 +493,21 @@ void CountPeople(void)
 					IRout_tim = LL_TIM_GetCounter(TIM2);
 					LL_mDelay(100);
 					count_people -= 1;
+					
+					LL_TIM_ClearFlag_UPDATE(TIM2); //clear interrupt
+					TIM_OC_Config_buzzer(ARR_CALCULATE(5000));
+					TIM_BASE_DurationConfig(10); //cal function
+					
+					
+				
+					LL_mDelay(500);
+					
+					
+					
+					LL_TIM_ClearFlag_UPDATE(TIM2); //clear interrupt
+				  TIM_OC_Config_buzzer(ARR_CALCULATE(59999));
+					TIM_BASE_DurationConfig(10); //cal function
+					
 					if(count_people < 0)
 						count_people = 0;
 					LL_mDelay(500);
