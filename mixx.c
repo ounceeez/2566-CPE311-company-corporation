@@ -109,6 +109,7 @@ void TIM_OC_GPIO_Config(void);
 void TIM_OC_Config(void);
 void Config_Motor(void);
 void PA11_EXTI_Config(void);
+int f_count = 0;
 
 int p = 0;
 
@@ -140,15 +141,23 @@ int main()
 				LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_9);
 				LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_10);
 			}
-			
+			else{
 			LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_9);
 				LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_10);
-			
+			}
 				
-			
-			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_3);
+			if(f_count == 1){
+				LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_3);
+			}
+			else{
+				LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_3);
 			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_5);
 			LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_4);
+			
+			}
+			//LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_3);
+			//LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_5);
+			//LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_4);
 		}
 		if(count_people == 0){
 			LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_8);
@@ -183,7 +192,7 @@ int main()
 		//change temp from float to char
 		temp *= 100;		//Ex. change 23.45 to 2345
 		
-		if(temp >= 3200.0 && count_people == 0){
+		if(temp >= 2600.0 && count_people == 0){
 			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_3);
 			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_5);
 			LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_4);
@@ -635,7 +644,7 @@ void EXTI9_5_IRQHandler(void){
 			sw_count = 0;
 			//IRout = 0;
 		}
-		LL_TIM_DisableCounter(TIM2);
+		//LL_TIM_DisableCounter(TIM2);
     }
     LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_8); // Change EXTI line to LL_EXTI_LINE_8
 }
@@ -723,11 +732,13 @@ void PA11_EXTI_Config(void) // EXTI Config for PA11
     NVIC_SetPriority(EXTI15_10_IRQn, 0);
 }
 
+
+
 void EXTI15_10_IRQHandler(void) // EXTI Handler for lines 10 to 15
 {
     if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_11) == SET)
 		{ // Change EXTI line to LL_EXTI_LINE_11
-			if(p>=0 && p<100)
+			/*if(p>=0 && p<100)
 			{
 				p += 25;
 				LL_TIM_OC_SetCompareCH2(TIM3, p);
@@ -736,7 +747,20 @@ void EXTI15_10_IRQHandler(void) // EXTI Handler for lines 10 to 15
 			{
 				p=0;
 				LL_TIM_OC_SetCompareCH2(TIM3, p);
-			}
+			}*/
+			
+			if(f_count == 0)
+		{
+			LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_3);
+			f_count = 1;
+			//IRout = 0;
+		}
+		else if(f_count == 1){
+			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_3);
+			f_count = 0;
+			//IRout = 0;
+		}
+			
 			//TIM_OC_Config();
     }
     LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_11); // Change EXTI line to LL_EXTI_LINE_11
