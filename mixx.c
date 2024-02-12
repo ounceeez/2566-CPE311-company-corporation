@@ -200,7 +200,7 @@ int main()
 			TIM_BASE_DurationConfig(Note[i]==S_MUTE?10:200);
 			LL_TIM_SetAutoReload(TIM4, ARR_CALCULATE((sizeof(Note)/sizeof(Note[i]))>i?Note[i++]:MUTE+(i=0))); //Change ARR of Timer PWM
 			
-			LL_mDelay(500);
+			LL_mDelay(150);
 			
 			TIM_OC_Config_buzzer(ARR_CALCULATE(70000));
 			
