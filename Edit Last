@@ -575,40 +575,30 @@ void LED_Config(void)
 
 	//Configure GPIOB using struct
 	GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;  //Set GPIO output mode
-	GPIO_InitStruct.Pin = LL_GPIO_PIN_9;  //Configure PB6
+	GPIO_InitStruct.Pin = LL_GPIO_PIN_9 | LL_GPIO_PIN_10;  //Configure PA9
 	GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;  //Set output type
 	GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;  //Disable internal pull resistor
 	GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;  //Set output speed
-	 
-	LL_GPIO_Init(GPIOA, &GPIO_InitStruct);  //Write configure to GPIOB register
-	
-	GPIO_InitStruct.Pin = LL_GPIO_PIN_10;  //Configure PB7
 	LL_GPIO_Init(GPIOA, &GPIO_InitStruct);  //Write configure to GPIOB register
 }
-
 
 void IR_GPIO_Config(void)
 {
 	LL_GPIO_InitTypeDef gpio_initstructure;
-	
-	LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
-	
+	LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);	
 	gpio_initstructure.Mode = LL_GPIO_MODE_INPUT;
 	gpio_initstructure.Pin =  LL_GPIO_PIN_1 | LL_GPIO_PIN_4;
 	gpio_initstructure.Pull = LL_GPIO_PULL_NO;
 	gpio_initstructure.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
-	
 	LL_GPIO_Init(GPIOA, &gpio_initstructure);
-	
 }
 
 void GPIO_Config(void){
     LL_GPIO_InitTypeDef GPIO_InitStuct;
     LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
-    
     // Configure PA10 instead of PA0
     GPIO_InitStuct.Mode = LL_GPIO_MODE_INPUT;
-    GPIO_InitStuct.Pin = LL_GPIO_PIN_11; // Change pin to PA10
+    GPIO_InitStuct.Pin = LL_GPIO_PIN_11; // Config Pin
     GPIO_InitStuct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
     GPIO_InitStuct.Pull = LL_GPIO_PULL_NO;
     GPIO_InitStuct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
@@ -730,8 +720,8 @@ void PA11_EXTI_Config(void) // EXTI Config for PA11
     PA11_EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_FALLING;
     LL_EXTI_Init(&PA11_EXTI_InitStruct);
     // Setup NVIC
-    NVIC_EnableIRQ(EXTI15_10_IRQn); // Use EXTI15_10_IRQn for lines 10 to 15
-    NVIC_SetPriority(EXTI15_10_IRQn, 0);
+    NVIC_EnableIRQ((EXTI15_10_IRQn)40); // Use EXTI15_10_IRQn for lines 10 to 15
+    NVIC_SetPriority((EXTI15_10_IRQn)40, 0);
 }
 
 
