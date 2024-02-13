@@ -49,7 +49,7 @@
 #define S_MUTE					(uint16_t) 1000000
 
 /*for 10ms update event*/
-#define TIMx_PSC			2 
+#define TIMx_PSC			3 
 
 /*Macro function for ARR calculation*/
 #define ARR_CALCULATE(N) ((32000000) / ((TIMx_PSC) * (N)))
@@ -65,8 +65,10 @@ void TIM_BASE_DurationConfig(uint16_t);
 /*uint16_t Note[] = {E_O5,E_O5,G_05,C_05,C_05,MUTE,MUTE,A_05,A_05,C_06,F_05,F_05,MUTE,MUTE,B_05,S_MUTE,B_05,S_MUTE,C_06,S_MUTE,D_06,S_MUTE,C_06,C_06,C_06,C_06,
                    E_O5,E_O5,G_05,C_05,C_05,MUTE,MUTE,A_05,A_05,C_06,F_05,F_05,MUTE,MUTE,A_05,S_MUTE,B_05,S_MUTE,G_05,S_MUTE,A_05,S_MUTE,B_05,S_MUTE,D_06,S_MUTE,C_06,C_06,C_06,C_06};
 */
-uint16_t Note[] = {E_O5,E_O5,MUTE,MUTE};
+//uint16_t Note[] = {E_O5,E_O5,MUTE,MUTE};
+uint16_t Note[] = {E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,E_O5,MUTE,MUTE,MUTE,MUTE,MUTE,MUTE,MUTE,MUTE,MUTE,MUTE,MUTE};
 int i =0; // position in array
+int r = 0;
 
 void SystemClock_Config(void);
 void OW_WriteBit(uint8_t d);
@@ -194,15 +196,21 @@ int main()
 		//change temp from float to char
 		temp *= 100;		//Ex. change 23.45 to 2345
 		
-		if(temp >= 2600.0 && count_people == 0){
+		if(count_people == 1){
+			i = 0;
+		}
+		
+		if(temp >= 2500.0 && count_people == 0){
 			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_3);
 			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_5);
 			LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_4);
 			
 			TIM_BASE_DurationConfig(Note[i]==S_MUTE?10:200);
-			LL_TIM_SetAutoReload(TIM4, ARR_CALCULATE((sizeof(Note)/sizeof(Note[i]))>i?Note[i++]:MUTE+(i=0))); //Change ARR of Timer PWM
+			//LL_TIM_SetAutoReload(TIM4, ARR_CALCULATE((sizeof(Note)/sizeof(Note[i]))>i?Note[i++]:MUTE+(i=0))); //Change ARR of Timer PWM
+			LL_TIM_SetAutoReload(TIM4, ARR_CALCULATE((sizeof(Note)/sizeof(Note[i]))>i?Note[i++]:MUTE)); //Change ARR of Timer PWM
+			//LL_TIM_SetAutoReload(TIM4, ARR_CALCULATE((i < sizeof(Note)) ? Note[i++] : MUTE)); //Change ARR of Timer PWM
 			
-			LL_mDelay(150);
+			LL_mDelay(10);
 			
 			TIM_OC_Config_buzzer(ARR_CALCULATE(70000));
 			
@@ -391,7 +399,7 @@ void TIM_BASE_Config_buzzer(uint16_t ARR)
 	timbase_initstructure.ClockDivision = LL_TIM_CLOCKDIVISION_DIV1;
 	timbase_initstructure.CounterMode = LL_TIM_COUNTERMODE_UP;
 	timbase_initstructure.Autoreload = ARR - 1;
-	timbase_initstructure.Prescaler =  TIMx_PSC- 1;
+	timbase_initstructure.Prescaler =  TIMx_PSC - 1;
 	LL_TIM_Init(TIM4, &timbase_initstructure);
 	
 	LL_TIM_EnableCounter(TIM4); 
@@ -612,11 +620,11 @@ void PA8_EXTI_Config(void){
     PA08_EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_8; // Change EXTI line to LL_EXTI_LINE_8
     PA08_EXTI_InitStruct.LineCommand = ENABLE;
     PA08_EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
-    PA08_EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_FALLING;
-    LL_EXTI_Init(&PA10_EXTI_InitStruct);
+    PA08_EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING;
+    LL_EXTI_Init(&PA08_EXTI_InitStruct);
     // Setup NVIC
-    NVIC_EnableIRQ((EXTI9_5_IRQn)23); // Change IRQ to handle EXTI line 5 to EXTI line 9
-    NVIC_SetPriority((EXTI9_5_IRQn)23, 0);
+    NVIC_EnableIRQ(EXTI9_5_IRQn); // Change IRQ to handle EXTI line 5 to EXTI line 9
+    NVIC_SetPriority(EXTI9_5_IRQn, 0);
 }
 
 void EXTI9_5_IRQHandler(void){
@@ -717,11 +725,11 @@ void PA11_EXTI_Config(void) // EXTI Config for PA11
     PA11_EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_11; // Change EXTI line to LL_EXTI_LINE_11
     PA11_EXTI_InitStruct.LineCommand = ENABLE;
     PA11_EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
-    PA11_EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_FALLING;
+    PA11_EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING;
     LL_EXTI_Init(&PA11_EXTI_InitStruct);
     // Setup NVIC
-    NVIC_EnableIRQ((EXTI15_10_IRQn)40); // Use EXTI15_10_IRQn for lines 10 to 15
-    NVIC_SetPriority((EXTI15_10_IRQn)40, 0);
+    NVIC_EnableIRQ(EXTI15_10_IRQn); // Use EXTI15_10_IRQn for lines 10 to 15
+    NVIC_SetPriority(EXTI15_10_IRQn, 0);
 }
 
 
