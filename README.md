@@ -34,6 +34,10 @@
 
 
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/e95d23f9-1b6c-4087-bcca-0e282d60e555)
+![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/1b32a11e-108b-4856-844d-7aed1e8d898d)
+
+![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/ce539580-36ad-4bde-8eaa-75bfc4b09887)
+
 
 
 
