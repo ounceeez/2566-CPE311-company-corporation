@@ -1,0 +1,68 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.27.1.0
+Copyright (C) 2019 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Rifa-e Hayeelohmae, TNI, LIC=----
+ 
+Tool Versions:
+Toolchain:       MDK-Lite  Version: 5.34.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+CPU DLL:         SARMCM3.DLL V5.34.0.0
+Dialog DLL:      DCM.DLL V1.17.3.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.8.0
+Dialog DLL:      TCM.DLL V1.48.0.0
+ 
+<h2>Project:</h2>
+E:\TNIWorks\CPE-312\CPE-312 Template\Project\MDK-ARM\STM32L152RB.uvprojx
+Project File Date:  02/14/2024
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Rebuild target 'Demonstrate'
+assembling startup_stm32l152xb.s...
+compiling stm32l1xx_ll_rcc.c...
+compiling system_stm32l1xx.c...
+compiling stm32l1xx_ll_pwr.c...
+compiling stm32l1xx_ll_lcd.c...
+compiling stm32l1xx_ll_tim.c...
+compiling stm32l1xx_ll_exti.c...
+compiling stm32l1xx_ll_utils.c...
+compiling dwt_delay.c...
+compiling stm32l1xx_ll_gpio.c...
+compiling stm32l152_glass_lcd.c...
+compiling main.c...
+..\src\main.c(356): warning:  #111-D: statement is unreachable
+  	DWT_Delay(410);
+..\src\main.c(486): warning:  #69-D: integer conversion resulted in truncation
+  					TIM_OC_Config_buzzer(ARR_CALCULATE(10));
+..\src\main.c(821): warning:  #1-D: last line of file ends without a newline
+  }
+..\src\main.c: 3 warnings, 0 errors
+linking...
+Program Size: Code=7356 RO-data=276 RW-data=188 ZI-data=1636  
+".\Objects\STM32L152RB.axf" - 0 Error(s), 3 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32L1xx_DFP.1.4.1.pack
+                Keil.STM32L1xx_DFP.1.4.1
+                STMicroelectronics STM32L1 Series Device Support and Examples
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_Demonstrate
+  C:\Users\HP Pavilion\AppData\Local\Arm\Packs\Keil\STM32L1xx_DFP\1.4.1\Drivers\CMSIS\Device\ST\STM32L1xx\Include
+
+<h2>Collection of Component Files used:</h2>
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>

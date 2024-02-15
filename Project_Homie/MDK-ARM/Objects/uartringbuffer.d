@@ -1,0 +1,13 @@
+.\objects\uartringbuffer.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Src\UartRingbuffer.c
+.\objects\uartringbuffer.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\UartRingbuffer.h
+.\objects\uartringbuffer.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_usart.h
+.\objects\uartringbuffer.o: ..\..\Drivers\CMSIS\Device\ST\STM32L1xx\Include\stm32l1xx.h
+.\objects\uartringbuffer.o: ..\..\Drivers\CMSIS\Device\ST\STM32L1xx\Include\stm32l152xb.h
+.\objects\uartringbuffer.o: ..\..\Drivers\CMSIS\Include\core_cm3.h
+.\objects\uartringbuffer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\uartringbuffer.o: ..\..\Drivers\CMSIS\Include\core_cmInstr.h
+.\objects\uartringbuffer.o: ..\..\Drivers\CMSIS\Include\cmsis_armcc.h
+.\objects\uartringbuffer.o: ..\..\Drivers\CMSIS\Include\core_cmFunc.h
+.\objects\uartringbuffer.o: ..\..\Drivers\CMSIS\Device\ST\STM32L1xx\Include\system_stm32l1xx.h
+.\objects\uartringbuffer.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_gpio.h
+.\objects\uartringbuffer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
