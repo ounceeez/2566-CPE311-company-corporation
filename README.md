@@ -23,7 +23,6 @@
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/4b04dd64-7936-40dd-a998-fc6a4a9ee35a)
 
 ## SCHEMATIC DIAGRAM 
-![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/0c0ae4f0-52c8-4cdf-aa97-d8193c3ab7b6)
  
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/d6319f6f-d5e1-4e0a-9c22-80b67e7ca184)
 
