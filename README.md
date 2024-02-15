@@ -1,6 +1,7 @@
 # Homie
 
  Smart home Model แบบจำลองบ้านอัจฉริยะ พัดลมจะเปิดเมื่ออุณหภูมิสูงกว่าค่าที่ตั้งไว้ ไฟในบ้านจะติดต่อเมื่อมีคนเข้ามา และดับเมื่อไม่มีคนอยู่ในบ้านเสมอ พัดลมและไฟ สามารถเปิดปิดผ่านสวิตช์ได้เมื่อมีคนอยู่
+ https://www.canva.com/design/DAF65XtcMEA/ymzRmqHBpV7u68h1jHpdkQ/edit?utm_content=DAF65XtcMEA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton&authuser=0
 
 ## Requirements
 
