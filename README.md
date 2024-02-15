@@ -37,6 +37,10 @@
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/dd6e6351-6a9e-419c-9cc4-b24c9e6d983b)
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/2b63405a-aa8a-440c-b6da-b2693b3d9a39)
 
+## Gantt Chart
+![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/386865de-9dfb-4c93-a330-989f0f2d068d)
+
+
 
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/e95d23f9-1b6c-4087-bcca-0e282d60e555)
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/1b32a11e-108b-4856-844d-7aed1e8d898d)
