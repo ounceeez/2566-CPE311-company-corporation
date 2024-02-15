@@ -40,7 +40,7 @@
 ## Gantt Chart
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/386865de-9dfb-4c93-a330-989f0f2d068d)
 
-## Design
+## Model design
 
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/e95d23f9-1b6c-4087-bcca-0e282d60e555)
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/1b32a11e-108b-4856-844d-7aed1e8d898d)
