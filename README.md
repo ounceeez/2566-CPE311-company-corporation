@@ -34,6 +34,8 @@
 
 ## Flowchart
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/a1881ada-d094-4ef2-adb4-17577895fd99)
+![flowchart](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/27e4faac-1f0d-490a-a7ca-86e3c3346e49)
+
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/dd6e6351-6a9e-419c-9cc4-b24c9e6d983b)
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/2b63405a-aa8a-440c-b6da-b2693b3d9a39)
 
