@@ -28,6 +28,8 @@
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/d2c315b5-3952-42e5-9a4f-20c7a8444d1c)
 
 ## Flowchart
+![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/2b614879-580b-480c-9076-f2373c6e2a41)
+
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/a1881ada-d094-4ef2-adb4-17577895fd99)
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/dd6e6351-6a9e-419c-9cc4-b24c9e6d983b)
 ![image](https://github.com/ounceeez/2566-CPE311-company-corporation/assets/144422351/2b63405a-aa8a-440c-b6da-b2693b3d9a39)
